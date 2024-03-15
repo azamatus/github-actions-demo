@@ -1,0 +1,9 @@
+{
+  "default": [
+    {
+      "name": "nest",
+      "url": "https://github.com/nestjs/nest",
+      "description": "TypeScript starter repository"
+    }
+  ]
+}
