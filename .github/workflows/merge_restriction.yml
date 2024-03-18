@@ -14,22 +14,21 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Get changed directory
-        id: changed-files-specific
+        id: check_directory_changes
         uses: tj-actions/changed-files@v43
         with:
           files: src/resources/**
 
       - name: Run step inf any files in the resources folder changed
-        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        if: steps.check_directory_changes.outputs.any_changed == 'true'
         env:
-          ALL_CHANGED_FILES: ${{ steps.changed-files-specific.outputs.all_changed_files }}
+          ALL_CHANGED_FILES: ${{ steps.check_directory_changes.outputs.all_changed_files }}
         run: |
           echo "One or more files in the docs folder has changed."
           echo "List all the files that have changed: $ALL_CHANGED_FILES"
-          echo "changes=true" >> $GITHUB_OUTPUT
 
       - name: Add reviewers if directory changes detected
-        if: steps.check_changes.outputs.changes == 'true'
+        if: steps.check_directory_changes.outputs.any_changed == 'true'
         uses: actions/github-script@v4
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
