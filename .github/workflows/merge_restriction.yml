@@ -20,9 +20,9 @@ jobs:
           # Add your script/command here to check for directory changes
           # For example:
           if git diff --name-only ${{ github.base_ref }}...${{ github.head_ref }} | grep -q "src/resources"; then
-            echo "::set-output name=changes::true"
+            echo "changes=true" >> $GITHUB_OUTPUT
           else
-            echo "::set-output name=changes::false"
+            echo "changes=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Add reviewers if directory changes detected
