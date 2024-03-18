@@ -33,7 +33,7 @@ jobs:
             echo "No changes detected in src/resources"
             reviewers = ""
           fi
-          echo "reviewers=$reviews" >> $GITHUB_OUTPUT
+          echo "reviewers=$reviewers" >> $GITHUB_OUTPUT
 
       - name: Add reviewers if specific directory changes detected
         if: steps.check_directory_changes.outputs.reviewers != ''
