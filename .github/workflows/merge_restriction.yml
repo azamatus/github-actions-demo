@@ -24,7 +24,7 @@ jobs:
               - test/**
 
       - name: Run step if resources files in changed
-        id: define_reviewers_by_directory
+        id: define_resources_reviewers_by_directory
         if: steps.check_directory_changes.outputs.src_resources_any_changed == 'true'
         env:
           RESOURCES_CHANGED_FILES: ${{ steps.check_directory_changes.outputs.src_resources_all_changed_files }}
@@ -36,7 +36,7 @@ jobs:
           echo "reviewers=$REVIEWERS" >> "$GITHUB_OUTPUT"
 
       - name: Run step if any test folder changed
-        id: define_reviewers_by_directory
+        id: define_test_reviewers_by_directory
         if: steps.check_directory_changes.outputs.test_any_changed == 'true'
         env:
           TEST_ALL_CHANGED_FILES: ${{ steps.check_directory_changes.outputs.test_all_changed_files }}
@@ -49,7 +49,7 @@ jobs:
           echo "reviewers=$REVIEWERS" >> "$GITHUB_OUTPUT"    
 
       - name: Add reviewers if specific directory changes detected
-        if: steps.define_reviewers_by_directory.outputs.reviewers != ''
+        if: steps.define_resources_reviewers_by_directory.outputs.reviewers != ''
         uses: actions/github-script@v4
         with:
           github-token: ${{ secrets.MY_PAT }}
