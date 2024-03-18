@@ -28,7 +28,7 @@ jobs:
         run: |
           echo "One or more files in the docs folder has changed."
           echo "List all the files that have changed: $ALL_CHANGED_FILES"
-          if echo $ALL_CHANGED_FILES | grep -q "src/resources"; then
+          if echo $ALL_CHANGED_FILES | grep -q "^resources"; then
             echo "Changes detected in src/resources"
             REVIEWERS="azamatus"
           else
