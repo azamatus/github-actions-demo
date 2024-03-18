@@ -19,7 +19,7 @@ jobs:
           echo "=============== Add your script/command here to check for directory changes ==============="
           # Add your script/command here to check for directory changes
           # For example:
-          if git diff --name-only ${{ github.base_ref }}..${{ github.head_ref }} -- "src/resources"; then
+          if git diff --name-only ${{ github.head_ref }}..${{ github.base_ref }} -- "src/resources"; then
             echo "changes=true" >> $GITHUB_OUTPUT
           else
             echo "changes=false" >> $GITHUB_OUTPUT
