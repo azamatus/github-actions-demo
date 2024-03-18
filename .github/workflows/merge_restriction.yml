@@ -19,7 +19,8 @@ jobs:
         with:
           files: src/resources/**
 
-      - name: Run step inf any files in the resources folder changed
+      - name: Run step if any files in the resources folder changed
+        id: define_reviewers_by_directory
         if: steps.check_directory_changes.outputs.any_changed == 'true'
         env:
           ALL_CHANGED_FILES: ${{ steps.check_directory_changes.outputs.all_changed_files }}
@@ -38,7 +39,7 @@ jobs:
           echo "reviewers=$REVIEWERS" >> "$GITHUB_OUTPUT"
 
       - name: Add reviewers if specific directory changes detected
-        if: steps.check_directory_changes.outputs.any_changed == 'true'
+        if: steps.define_reviewers_by_directory.outputs.reviewers != ''
         uses: actions/github-script@v4
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -48,8 +49,8 @@ jobs:
               repo: context.repo.repo,
               pull_number: context.payload.pull_request.number,
             });
-            echo "${{ steps.check_directory_changes.outputs.reviewers }} reviewers from"
-            const reviewers = "${{ steps.check_directory_changes.outputs.reviewers }}".split(" ");
+            echo "${{ steps.define_reviewers_by_directory.outputs.reviewers }} reviewers from"
+            const reviewers = "${{ steps.define_reviewers_by_directory.outputs.reviewers }}".split(" ");
             
             await github.pulls.requestReviewers({
               owner: context.repo.owner,
