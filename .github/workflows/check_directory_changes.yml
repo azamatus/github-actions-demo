@@ -18,7 +18,7 @@ jobs:
         run: |
           # Change this to the directory you want to monitor
           echo "=============== Change this to the directory you want to monitor ==============="
-          DIR="../../src/resources"
+          DIR="src/resources"
 
           # Get the list of changed files in the specified directory
           echo "=============== Get the list of changed files in the specified directory ==============="
