@@ -13,8 +13,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Get changed directory
+      - name: Get changed files
+        id: check_changes
         uses: tj-actions/changed-files@v43
+
+      - name: Get changed directory
         env:
           ALL_CHANGED_FILES: ${{ steps.check_changes.outputs.all_changed_files }}
         with:
