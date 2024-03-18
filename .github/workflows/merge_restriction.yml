@@ -49,7 +49,7 @@ jobs:
               repo: context.repo.repo,
               pull_number: context.payload.pull_request.number,
             });
-            echo "${{ steps.define_reviewers_by_directory.outputs.reviewers }} reviewers from"
+            
             const reviewers = "${{ steps.define_reviewers_by_directory.outputs.reviewers }}".split(" ");
             
             await github.pulls.requestReviewers({
