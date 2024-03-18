@@ -36,7 +36,6 @@ jobs:
             REVIEWERS = ""
           fi
           echo "$REVIEWERS itisrevuewsers"
-#          echo "::set-output name=reviewers::$REVIEWERS"
           echo "reviewers=$REVIEWERS" >> $GITHUB_OUTPUT
 
       - name: Add reviewers if specific directory changes detected
