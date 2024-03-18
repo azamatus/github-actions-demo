@@ -26,23 +26,32 @@ jobs:
         run: |
           echo "One or more files in the docs folder has changed."
           echo "List all the files that have changed: $ALL_CHANGED_FILES"
+          if echo $ALL_CHANGED_FILES | grep -q "src/resources"; then
+            echo "Changes detected in src/resources"
+            reviewers = "azamatus"
+          else
+            echo "No changes detected in src/resources"
+            reviewers = ""
+          fi
+          echo "reviewers=$reviews" >> $GITHUB_OUTPUT
 
-      - name: Add reviewers if directory changes detected
-        if: steps.check_directory_changes.outputs.any_changed == 'true'
+      - name: Add reviewers if specific directory changes detected
+        if: steps.check_directory_changes.outputs.reviewers != ''
         uses: actions/github-script@v4
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const { data: reviewers } = await github.pulls.listRequestedReviewers({
+            const { data: branches } = await github.pulls.list({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              pull_number: context.issue.number
+              pull_number: context.payload.pull_request.number,
             });
-            if (!reviewers.some(reviewer => reviewer.login === 'username')) {
-              await github.pulls.createReviewRequest({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: context.issue.number,
-                reviewers: ['azamatus']
-              });
-            }
+            
+            const reviewers = "${{ steps.check_directory_changes.outputs.reviewers }}".split(" ");
+            
+            await github.pulls.requestReviewers({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+              reviewers: reviewers,
+            });
