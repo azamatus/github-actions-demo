@@ -42,7 +42,7 @@ jobs:
         if: steps.define_reviewers_by_directory.outputs.reviewers != ''
         uses: actions/github-script@v4
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GW_TOKEN }}
           script: |
             const { data: branches } = await github.pulls.list({
               owner: context.repo.owner,
