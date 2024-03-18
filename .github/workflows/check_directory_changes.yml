@@ -1,47 +1,55 @@
-name: Check Directory Changes
+name: Enforce Reviewers for Directory Changes
 
 on:
   pull_request:
-    branches:
-      - main
+    types: [opened, reopened, synchronize]
 
 jobs:
-  check-changes:
+  enforce-reviewers:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Check if directory changed
+        id: check_directory
+        uses: actions/checkout@v2
         with:
-          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.ref }}
+          path: changed_files
 
-      - name: Check for directory changes
-        id: check_changes
+      - name: Set reviewers based on directory changes
+        id: set_reviewers
         run: |
-          # Change this to the directory you want to monitor
-          echo "=============== Change this to the directory you want to monitor ==============="
-          DIR="src/resources"
+          changed_files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
 
-          # Get the list of changed files in the specified directory
-          echo "=============== Get the list of changed files in the specified directory  22 ==============="
-          CHANGED_FILES=$(git diff --name-only ${{ github.base_ref }}...${{ github.head_ref }} -- $DIR)
-
-          # Check if there are changes in the specified directory
-          echo "=============== Check if there are changes in the specified directory ==============="
-          if [ -n "$CHANGED_FILES" ]; then
-            echo "Changes detected in $DIR"
-            echo "$CHANGED_FILES"
-            echo "::set-output name=changes::true"
+          if echo "$changed_files" | grep -q "^directory1/"; then
+            echo "Directory 1 changed"
+            reviewers="user1 user2"
+          elif echo "$changed_files" | grep -q "^directory2/"; then
+            echo "Directory 2 changed"
+            reviewers="user3 user4"
           else
-            echo "No changes detected in $DIR"
-            echo "::set-output name=changes::false"
+            echo "No specific directory changed"
+            reviewers=""
           fi
 
-      - name: Use the output
-        run: |
-          if [ "${{ steps.check_changes.outputs.changes }}" == "true" ]; then
-            # Add your actions here if changes are detected
-            echo "Changes detected, take necessary actions..."
-          else
-            echo "No changes detected."
-          fi
+          echo "::set-output name=reviewers::$reviewers"
+
+      - name: Request Reviews
+        if: steps.set_reviewers.outputs.reviewers != ''
+        uses: actions/github-script@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { data: branches } = await github.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+            });
+
+            const reviewers = "${{ steps.set_reviewers.outputs.reviewers }}".split(" ");
+            echo "$reviewers"
+            await github.pulls.requestReviewers({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+              reviewers: reviewers,
+            });
