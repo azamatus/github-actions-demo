@@ -42,19 +42,9 @@ jobs:
         if: steps.define_reviewers_by_directory.outputs.reviewers != ''
         uses: actions/github-script@v4
         with:
+          route: POST /repos/:owner/:repo/pulls/:pull_number/requested_reviewers
+          owner: ${{ github.repository_owner }}
+          repo: ${{ github.repository }}
+          pull_number: ${{ github.event.pull_request.number }}
+          reviewers: azamatus
           token: ${{ secrets.MY_PAT }}
-          script: |
-            const { data: branches } = await github.pulls.list({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.payload.pull_request.number,
-            });
-            
-            const reviewers = "${{ steps.define_reviewers_by_directory.outputs.reviewers }}".split(" ");
-            
-            await github.pulls.requestReviewers({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.payload.pull_request.number,
-              reviewers: reviewers,
-            });
