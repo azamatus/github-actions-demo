@@ -29,8 +29,8 @@ jobs:
           echo "List all the files that have changed: $ALL_CHANGED_FILES"
           if echo $ALL_CHANGED_FILES | grep -q "src/resources"; then
             echo "Changes detected in src/resources"
+            echo "$REVIEWERS ss detected in src/resources"
             $REVIEWERS = "azamatus"
-            echo "$REVIEWERS detected in src/resources"
           else
             echo "No changes detected in src/resources"
             $REVIEWERS = ""
