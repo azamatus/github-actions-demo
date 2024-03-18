@@ -38,7 +38,7 @@ jobs:
           echo "reviewers=$REVIEWERS" >> "$GITHUB_OUTPUT"
 
       - name: Add reviewers if specific directory changes detected
-        if: steps.check_directory_changes.outputs.reviewers != ''
+        if: steps.check_directory_changes.outputs.any_changed == 'true'
         uses: actions/github-script@v4
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -48,7 +48,7 @@ jobs:
               repo: context.repo.repo,
               pull_number: context.payload.pull_request.number,
             });
-            
+            echo "${{ steps.check_directory_changes.outputs.reviewers }} reviewers from"
             const reviewers = "${{ steps.check_directory_changes.outputs.reviewers }}".split(" ");
             
             await github.pulls.requestReviewers({
