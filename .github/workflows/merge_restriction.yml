@@ -30,11 +30,12 @@ jobs:
           if echo $ALL_CHANGED_FILES | grep -q "src/resources"; then
             echo "Changes detected in src/resources"
             $REVIEWERS = "azamatus"
+            echo "$REVIEWERS detected in src/resources"
           else
             echo "No changes detected in src/resources"
             $REVIEWERS = ""
           fi
-          echo "$$REVIEWERS itisrevuewsers"
+          echo "$REVIEWERS itisrevuewsers"
           echo "::set-output name=reviewers::$REVIEWERS"
           echo "reviewers=$REVIEWERS" >> $GITHUB_OUTPUT
 
