@@ -23,10 +23,10 @@ jobs:
         if: steps.check_directory_changes.outputs.any_changed == 'true'
         env:
           ALL_CHANGED_FILES: ${{ steps.check_directory_changes.outputs.all_changed_files }}
+          REVIEWERS: ""
         run: |
           echo "One or more files in the docs folder has changed."
           echo "List all the files that have changed: $ALL_CHANGED_FILES"
-          REVIEWERS=""
           if echo $ALL_CHANGED_FILES | grep -q "src/resources"; then
             echo "Changes detected in src/resources"
             REVIEWERS = "azamatus"
