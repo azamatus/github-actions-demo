@@ -20,12 +20,12 @@ jobs:
         run: |
           changed_files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
 
-          if echo "$changed_files" | grep -q "^directory1/"; then
+          if echo "$changed_files" | grep -q "^src/resources/"; then
             echo "Directory 1 changed"
             reviewers="user1 user2"
           elif echo "$changed_files" | grep -q "^directory2/"; then
             echo "Directory 2 changed"
-            reviewers="user3 user4"
+            reviewers="azamatus"
           else
             echo "No specific directory changed"
             reviewers=""
