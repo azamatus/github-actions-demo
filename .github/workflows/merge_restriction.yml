@@ -17,7 +17,11 @@ jobs:
         id: check_directory_changes
         uses: tj-actions/changed-files@v43
         with:
-          files: src/resources/**
+          files_yaml: |
+            src_resources:
+              - src/resources/**
+            test:
+              - test/**
 
       - name: Run step if any files in the resources folder changed
         id: define_reviewers_by_directory
@@ -28,7 +32,7 @@ jobs:
         run: |
           echo "One or more files in the docs folder has changed."
           echo "List all the files that have changed: $ALL_CHANGED_FILES"
-          if echo $ALL_CHANGED_FILES | grep -q "^resources"; then
+          if echo $ALL_CHANGED_FILES | grep -q "src/resources"; then
             echo "Changes detected in src/resources"
             REVIEWERS="azamatus"
           else
