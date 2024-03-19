@@ -41,8 +41,10 @@ jobs:
             echo "src json changed"
             echo "$REVIEWERS on src json"
             if [ -z "${{ env.REVIEWERS }}" ]; then
+              echo "reviewers is empty"
               REVIEWERS="user3,user4"
             else
+              echo "reviewers is not empty"
               REVIEWERS="$REVIEWERS,user3,user4"
             fi
           fi
