@@ -65,4 +65,5 @@ jobs:
             console.log("here is the reviewers");
             console.log(resourcesReviewers);
             console.log(testReviewers);
-            console.log(testReviewers + resourcesReviewers);
+            const reviewers = [...resourcesReviewers, ...testReviewers];
+            console.log(reviewers);
