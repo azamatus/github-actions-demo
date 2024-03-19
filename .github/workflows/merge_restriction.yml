@@ -39,7 +39,7 @@ jobs:
           
           if echo "$RESOURCES_CHANGED_FILES" | grep -q "src/json"; then
             echo "src json changed"
-            REVIEWERS=REVIEWERS+"user3 user4"
+            REVIEWERS="$REVIEWERS user3 user4"
           fi
           
           echo "$REVIEWERS reviewers"
