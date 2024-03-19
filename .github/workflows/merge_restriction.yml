@@ -34,15 +34,15 @@ jobs:
           
           if echo "$RESOURCES_CHANGED_FILES" | grep -q "src/resources"; then
             echo "src resources changed"
-            REVIEWERS="user1 user2"
+            REVIEWERS="user1,user2"
           fi
           
           if echo "$RESOURCES_CHANGED_FILES" | grep -q "src/json"; then
             echo "src json changed"
             if echo "$REVIEWERS" == ''; then
-              REVIEWERS="user3 user4"
+              REVIEWERS="user3,user4"
             else
-              REVIEWERS="$REVIEWERS user3 user4"
+              REVIEWERS="$REVIEWERS,user3,user4"
             fi
           fi
           
@@ -77,8 +77,8 @@ jobs:
             
             const author = "${{ github.event.pull_request.user.login }}";
 
-            const resourcesReviewers = "${{ steps.define_resources_reviewers_by_directory.outputs.reviewers }}".split(" ");
-            const testReviewers = "${{ steps.define_test_reviewers_by_directory.outputs.reviewers }}".split(" ");
+            const resourcesReviewers = "${{ steps.define_resources_reviewers_by_directory.outputs.reviewers }}".split(",");
+            const testReviewers = "${{ steps.define_test_reviewers_by_directory.outputs.reviewers }}".split(",");
             
             const reviewers = [...new Set([...resourcesReviewers, ...testReviewers])];
             console.log(reviewers, "before");
