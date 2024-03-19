@@ -80,8 +80,8 @@ jobs:
             
             const author = "${{ github.event.pull_request.user.login }}";
 
-            const resourcesReviewers = "${{ steps.define_resources_reviewers_by_directory.outputs.reviewers }}".split(",");
-            const testReviewers = "${{ steps.define_test_reviewers_by_directory.outputs.reviewers }}".split(",");
+            const resourcesReviewers = "${{ steps.define_resources_reviewers_by_directory.outputs.reviewers }}".match(/[^ ]+/g);
+            const testReviewers = "${{ steps.define_test_reviewers_by_directory.outputs.reviewers }}".match(/[^ ]+/g);
             
             console.log(resourcesReviewers, "resourcesReviewers");
             console.log(testReviewers, "testReviewers");
