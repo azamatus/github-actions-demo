@@ -34,7 +34,8 @@ jobs:
           
           if echo "$RESOURCES_CHANGED_FILES" | grep -q "src/resources"; then
             echo "src resources changed"
-            REVIEWERS="user1,user2"
+            RESOURCE_REVIEWERS="user1 user2"
+            echo "::set-env name=REVIEWERS::RESOURCE_REVIEWERS"
           fi
           
           if echo "$RESOURCES_CHANGED_FILES" | grep -q "src/json"; then
@@ -42,10 +43,12 @@ jobs:
             echo "$REVIEWERS on src json"
             if [ -z "${{ env.REVIEWERS }}" ]; then
               echo "reviewers is empty"
-              REVIEWERS="user3,user4"
+              JSON_REVIEWERS="user3,user4"
+              echo "::set-env name=REVIEWERS::JSON_REVIEWERS"
             else
               echo "reviewers is not empty"
-              REVIEWERS="$REVIEWERS,user3,user4"
+              JSON_REVIEWERS="user3,user4"
+              echo "::set-env name=REVIEWERS::JSON_REVIEWERS"
             fi
           fi
           
