@@ -45,7 +45,7 @@ jobs:
               REVIEWERS="user3,user4"
             else
               echo "reviewers is not empty"
-              REVIEWERS="user3,user4"
+              REVIEWERS="$REVIEWERS,user3,user4"
             fi
           fi
           
