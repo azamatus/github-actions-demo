@@ -60,6 +60,8 @@ jobs:
               repo: context.repo.repo,
               pull_number: context.payload.pull_request.number,
             });
+            const author = "${{ github.event.pull_request.user.login }}";
+            console.log(author);
             const resourcesReviewers = "${{ steps.define_resources_reviewers_by_directory.outputs.reviewers }}".split(" ");
             const testReviewers = "${{ steps.define_test_reviewers_by_directory.outputs.reviewers }}".split(" ");
             console.log("here is the reviewers");
