@@ -80,6 +80,9 @@ jobs:
             const resourcesReviewers = "${{ steps.define_resources_reviewers_by_directory.outputs.reviewers }}".split(",");
             const testReviewers = "${{ steps.define_test_reviewers_by_directory.outputs.reviewers }}".split(",");
             
+            console.log(resourcesReviewers, "resourcesReviewers");
+            console.log(testReviewers, "testReviewers");
+            
             const reviewers = [...new Set([...resourcesReviewers, ...testReviewers])];
             console.log(reviewers, "before");
             const index = reviewers.indexOf(author);
