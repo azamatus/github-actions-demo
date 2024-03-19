@@ -40,7 +40,7 @@ jobs:
           if echo "$RESOURCES_CHANGED_FILES" | grep -q "src/json"; then
             echo "src json changed"
             echo "$REVIEWERS on src json"
-            if [ -z ${{ REVIEWERS }} ]; then
+            if [ -z "${{ env.REVIEWERS }}" ]; then
               REVIEWERS="user3,user4"
             else
               REVIEWERS="$REVIEWERS,user3,user4"
