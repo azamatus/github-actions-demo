@@ -67,3 +67,10 @@ jobs:
             console.log(testReviewers);
             const reviewers = [...resourcesReviewers, ...testReviewers];
             console.log(reviewers);
+            
+            await github.pulls.requestReviewers({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+              reviewers: reviewers,
+            });
