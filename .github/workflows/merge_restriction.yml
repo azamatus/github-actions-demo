@@ -35,12 +35,11 @@ jobs:
           if echo "$RESOURCES_CHANGED_FILES" | grep -q "src/resources"; then
             echo "src resources changed"
             REVIEWERS="user1 user2"
-          elif echo "$RESOURCES_CHANGED_FILES" | grep -q "src/json"; then
+          fi
+          
+          if echo "$RESOURCES_CHANGED_FILES" | grep -q "src/json"; then
             echo "src json changed"
             REVIEWERS="user3 user4"
-          else
-            echo "No specific directory changed"
-            REVIEWERS=""
           fi
           
           echo "$REVIEWERS reviewers"
