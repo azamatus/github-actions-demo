@@ -60,6 +60,5 @@ jobs:
               repo: context.repo.repo,
               pull_number: context.payload.pull_request.number,
             });
-            const reviewers = "${{ steps.define_reviewers_by_directory.outputs.reviewers }}".split(" ");
-            
-            echo "$reviewers list";
+            const reviewers = "${{ steps.define_resources_reviewers_by_directory.outputs.reviewers }}".split(" ");
+            echo "$reviewers reviewers";
