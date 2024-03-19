@@ -40,7 +40,7 @@ jobs:
         if: steps.check_directory_changes.outputs.test_any_changed == 'true'
         env:
           TEST_ALL_CHANGED_FILES: ${{ steps.check_directory_changes.outputs.test_all_changed_files }}
-          REVIEWERS: "user2"
+          REVIEWERS: ""
         run: |
           echo "One or more files in the test folder has changed."
           echo "List all the files that have changed: $TEST_ALL_CHANGED_FILES"
