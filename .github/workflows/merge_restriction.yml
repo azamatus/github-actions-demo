@@ -35,7 +35,7 @@ jobs:
           if echo "$RESOURCES_CHANGED_FILES" | grep -q "src/resources"; then
             echo "src resources changed"
             RESOURCE_REVIEWERS="user1 user2"
-            echo "::set-env name=REVIEWERS::$RESOURCE_REVIEWERS"
+            echo "REVIEWERS=$RESOURCE_REVIEWERS" >> "$GITHUB_ENV"
           fi
           
           if echo "$RESOURCES_CHANGED_FILES" | grep -q "src/json"; then
@@ -44,11 +44,11 @@ jobs:
             if [ -z "${{ env.REVIEWERS }}" ]; then
               echo "reviewers is empty"
               JSON_REVIEWERS="user3,user4"
-              echo "::set-env name=REVIEWERS::$JSON_REVIEWERS"
+              echo "REVIEWERS=$JSON_REVIEWERS" >> "$GITHUB_ENV"
             else
               echo "reviewers is not empty"
               JSON_REVIEWERS="user3,user4"
-              echo "::set-env name=REVIEWERS::$JSON_REVIEWERS"
+              echo "REVIEWERS=$JSON_REVIEWERS" >> "$GITHUB_ENV"
             fi
           fi
           
