@@ -39,7 +39,10 @@ jobs:
           
           if echo "$RESOURCES_CHANGED_FILES" | grep -q "src/json"; then
             echo "src json changed"
-            REVIEWERS="$REVIEWERS user3 user4"
+            if echo "$REVIEWERS" == ""; then
+              REVIEWERS="user3 user4"
+            else
+              REVIEWERS="$REVIEWERS user3 user4"
           fi
           
           echo "$REVIEWERS reviewers"
@@ -83,4 +86,4 @@ jobs:
               reviewers.splice(index, 1);
             }
             
-            console.log(reviewers);
+            console.log(reviewers, "after");
