@@ -20,7 +20,6 @@ jobs:
           files_yaml: |
             src_resources:
               - src/resources/**
-            test:
               - test/**
 
       - name: Run step if resources files in changed
@@ -33,24 +32,11 @@ jobs:
           echo "One or more files in the resources folder has changed."
           echo "List all the files that have changed: $RESOURCES_CHANGED_FILES"
           echo "$REVIEWERS reviewers"
-          echo "reviewers=$REVIEWERS" >> "$GITHUB_OUTPUT"
-
-      - name: Run step if any test folder changed
-        id: define_test_reviewers_by_directory
-        if: steps.check_directory_changes.outputs.test_any_changed == 'true'
-        env:
-          TEST_ALL_CHANGED_FILES: ${{ steps.check_directory_changes.outputs.test_all_changed_files }}
-          REVIEWERS: "azamatus user1 user2"
-        run: |
-          echo "One or more files in the test folder has changed."
-          echo "List all the files that have changed: $TEST_ALL_CHANGED_FILES"
-       
-          echo "$REVIEWERS reviewers"
-          echo "reviewers=$REVIEWERS" >> "$GITHUB_OUTPUT"    
+          echo "reviewers=$REVIEWERS" >> "$GITHUB_OUTPUT"  
 
       - name: Add reviewers if specific directory changes detected
         if: |
-          steps.define_resources_reviewers_by_directory.outputs.reviewers != '' || steps.define_test_reviewers_by_directory.outputs.reviewers != ''
+          steps.define_resources_reviewers_by_directory.outputs.reviewers != ''
         uses: actions/github-script@v4
         with:
           github-token: ${{ secrets.MY_PAT }}
@@ -74,10 +60,3 @@ jobs:
             }
             
             console.log(reviewers);
-            
-            await github.pulls.requestReviewers({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.payload.pull_request.number,
-              reviewers: reviewers,
-            });
