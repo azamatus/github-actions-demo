@@ -43,6 +43,7 @@ jobs:
               REVIEWERS="user3 user4"
             else
               REVIEWERS="$REVIEWERS user3 user4"
+            fi
           fi
           
           echo "$REVIEWERS reviewers"
