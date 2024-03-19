@@ -39,6 +39,7 @@ jobs:
           
           if echo "$RESOURCES_CHANGED_FILES" | grep -q "src/json"; then
             echo "src json changed"
+            echo "$REVIEWERS on src json"
             if echo "$REVIEWERS" == ''; then
               REVIEWERS="user3,user4"
             else
