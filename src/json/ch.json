@@ -1,0 +1,10 @@
+{
+  "default": [
+    {
+      "name": "nest",
+      "url": "https://github.com/nestjs/nest",
+      "description": "TypeScript starter repository",
+      "image": "https://img.shields.io/npm/v/@nestjs/core.svg"
+    }
+  ]
+}

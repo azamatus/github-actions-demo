@@ -20,23 +20,48 @@ jobs:
           files_yaml: |
             src_resources:
               - src/resources/**
-              - test/**
+              - src/json/**
 
       - name: Run step if resources files in changed
         id: define_resources_reviewers_by_directory
         if: steps.check_directory_changes.outputs.src_resources_any_changed == 'true'
         env:
           RESOURCES_CHANGED_FILES: ${{ steps.check_directory_changes.outputs.src_resources_all_changed_files }}
-          REVIEWERS: "user1 user1"
+          REVIEWERS: ""
         run: |
           echo "One or more files in the resources folder has changed."
           echo "List all the files that have changed: $RESOURCES_CHANGED_FILES"
+          
+          if echo "$RESOURCES_CHANGED_FILES" | grep -q "src/resources"; then
+            echo "src resources changed"
+            REVIEWERS="user1 user2"
+          elif echo "$RESOURCES_CHANGED_FILES" | grep -q "src/json"; then
+            echo "src json changed"
+            REVIEWERS="user3 user4"
+          else
+            echo "No specific directory changed"
+            REVIEWERS=""
+          fi
+          
           echo "$REVIEWERS reviewers"
-          echo "reviewers=$REVIEWERS" >> "$GITHUB_OUTPUT"  
+          echo "reviewers=$REVIEWERS" >> "$GITHUB_OUTPUT"
+
+      - name: Run step if any test folder changed
+        id: define_test_reviewers_by_directory
+        if: steps.check_directory_changes.outputs.test_any_changed == 'true'
+        env:
+          TEST_ALL_CHANGED_FILES: ${{ steps.check_directory_changes.outputs.test_all_changed_files }}
+          REVIEWERS: "azamatus user1 user2"
+        run: |
+          echo "One or more files in the test folder has changed."
+          echo "List all the files that have changed: $TEST_ALL_CHANGED_FILES"
+       
+          echo "$REVIEWERS reviewers"
+          echo "reviewers=$REVIEWERS" >> "$GITHUB_OUTPUT"    
 
       - name: Add reviewers if specific directory changes detected
         if: |
-          steps.define_resources_reviewers_by_directory.outputs.reviewers != ''
+          steps.define_resources_reviewers_by_directory.outputs.reviewers != '' || steps.define_test_reviewers_by_directory.outputs.reviewers != ''
         uses: actions/github-script@v4
         with:
           github-token: ${{ secrets.MY_PAT }}
