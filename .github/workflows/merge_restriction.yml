@@ -40,7 +40,7 @@ jobs:
         if: steps.check_directory_changes.outputs.test_any_changed == 'true'
         env:
           TEST_ALL_CHANGED_FILES: ${{ steps.check_directory_changes.outputs.test_all_changed_files }}
-          REVIEWERS: ""
+          REVIEWERS: "azamatus"
         run: |
           echo "One or more files in the test folder has changed."
           echo "List all the files that have changed: $TEST_ALL_CHANGED_FILES"
@@ -60,14 +60,18 @@ jobs:
               repo: context.repo.repo,
               pull_number: context.payload.pull_request.number,
             });
+            
             const author = "${{ github.event.pull_request.user.login }}";
-            console.log(author);
+
             const resourcesReviewers = "${{ steps.define_resources_reviewers_by_directory.outputs.reviewers }}".split(" ");
             const testReviewers = "${{ steps.define_test_reviewers_by_directory.outputs.reviewers }}".split(" ");
-            console.log("here is the reviewers");
-            console.log(resourcesReviewers);
-            console.log(testReviewers);
+            
             const reviewers = [...resourcesReviewers, ...testReviewers];
+            const index = reviewers.indexOf(author);
+            if (index > -1) {
+              reviewers.splice(index, 1);
+            }
+            
             console.log(reviewers);
             
             await github.pulls.requestReviewers({
