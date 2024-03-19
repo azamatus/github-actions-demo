@@ -43,7 +43,7 @@ jobs:
             if echo "$REVIEWERS" == ''; then
               REVIEWERS="user3,user4"
             else
-              REVIEWERS="$REVIEWERS,user3,user4"
+              REVIEWERS="echo $REVIEWERS,user3,user4"
             fi
           fi
           
