@@ -49,6 +49,13 @@ jobs:
             fi
           fi
           
+          COMMENT="You have changed resources directory, please do not forget to deploy worker"
+          API_URL="https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments"
+          curl -X POST $API_URL \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d "{\"body\": \"$COMMENT\"}"
+          
           echo "$REVIEWERS reviewers"
           echo "reviewers=$REVIEWERS" >> "$GITHUB_OUTPUT"
 
